@@ -29,6 +29,29 @@ async function run() {
 
 
     const topDeliveryCollection = client.db('BDparcel').collection('topDelivered')
+    const userCollection = client.db('BDparcel').collection('users')
+
+
+//users releted API
+
+app.post('/users', async (req,res) =>{
+    const user = req.body;
+    const result = await userCollection.insertOne(user);
+    res.send(result)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/topDelivered', async(req,res)=>{
     const cursor = topDeliveryCollection.find()
