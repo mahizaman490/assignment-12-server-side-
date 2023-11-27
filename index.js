@@ -30,7 +30,7 @@ async function run() {
     const bookingCollection = client.db('BDparcel').collection('bookings')
     const topDeliveryCollection = client.db('BDparcel').collection('topDelivered')
     const userCollection = client.db('BDparcel').collection('users')
-
+    const allDeliveryManCollection = client.db('BDparcel').collection('allDeliveryMan')
 app.get('/bookings', async(req,res) =>{
 
 const cursor = bookingCollection.find()
@@ -133,6 +133,28 @@ res.send(result)
       const result = await userCollection.insertOne(user);
       res.send(result)
     })
+
+
+///deliveryMan guloke  dekhabo
+
+
+
+app.get('/allDeliveryMan', async(req,res)=>{
+const cursor = allDeliveryManCollection.find()
+const result = await cursor.toArray();
+res.send(result);
+})
+
+
+app.get('/users', async(req,res)=>{
+const cursor = userCollection.find()
+const result = await cursor.toArray();
+res.send(result);
+})
+
+
+
+
 
 
 
