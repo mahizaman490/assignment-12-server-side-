@@ -3,7 +3,7 @@ const cors = require('cors')
 require('dotenv').config()
 const app = express()
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middlewere
 app.use(cors());
@@ -27,26 +27,61 @@ async function run() {
     // Send a ping to confirm a successful connection
 
 
-
+    const bookingCollection = client.db('BDparcel').collection('bookings')
     const topDeliveryCollection = client.db('BDparcel').collection('topDelivered')
     const userCollection = client.db('BDparcel').collection('users')
 
+app.get('/bookings', async(req,res) =>{
 
-//users releted API
+const cursor = bookingCollection.find()
+const result = await cursor.toArray()
+res.send(result)
 
-app.post('/users', async (req,res) =>{
-    const user = req.body;
- const query = {email:user.email}
- const existingUser = await userCollection.findOne(query);
- if(existingUser){
-    return res.send({message:'user already exists', insertedId: null})
- }
-    const result = await userCollection.insertOne(user);
-    res.send(result)
+})
+
+
+
+
+
+
+
+
+    app.post('/bookings', async (req, res) => {
+
+      const newBook = req.body;
+      console.log(newBook);
+      const result = await bookingCollection.insertOne(newBook);
+      res.send(result)
+
+
+    })
+
+
+
+app.delete('/bookings/:id', async(req,res)=>{
+
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+  const result = await bookingCollection.deleteOne(query)
+
+
+
 })
 
 
 
+    //users releted API
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email }
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ message: 'user already exists', insertedId: null })
+      }
+      const result = await userCollection.insertOne(user);
+      res.send(result)
+    })
 
 
 
@@ -58,12 +93,15 @@ app.post('/users', async (req,res) =>{
 
 
 
-app.get('/topDelivered', async(req,res)=>{
-    const cursor = topDeliveryCollection.find()
-    const result = await cursor.toArray()
-    res.send(result)
 
-})
+
+
+    app.get('/topDelivered', async (req, res) => {
+      const cursor = topDeliveryCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+
+    })
 
 
 
@@ -79,15 +117,15 @@ app.get('/topDelivered', async(req,res)=>{
 run().catch(console.dir);
 
 
-app.get('/',(req,res)=>{
-    res.send( 'BD-parcel-management-server is running')
+app.get('/', (req, res) => {
+  res.send('BD-parcel-management-server is running')
 })
 
 
 
 
 
-app.listen(port,()=>{
-    console.log(` BD-parcel-management-server is running on port ${port}`);
+app.listen(port, () => {
+  console.log(` BD-parcel-management-server is running on port ${port}`);
 
 })
