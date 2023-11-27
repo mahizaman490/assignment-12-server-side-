@@ -40,7 +40,12 @@ res.send(result)
 })
 
 
-
+app.get('/bookings/:id', async(req,res)=>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+  const result = await bookingCollection.findOne(query)
+  res.send(result)
+})
 
 
 
@@ -57,13 +62,59 @@ res.send(result)
     })
 
 
+app.put('/bookings/:id',async(req,res)=>{
+
+const id = req.params.id;
+const filter = {_id: new ObjectId(id)}
+const options = {upsert: true};
+const updatedbooking = req.body;
+const booking = {
+$set:{
+
+
+  Phone_Number:updatedbooking.Phone_Number,
+  email:updatedbooking.email,
+  name:updatedbooking.name,
+  Receivers_Name:updatedbooking.Receivers_Name,
+  price:updatedbooking.price,
+  Parcel_Weight:updatedbooking.Parcel_Weight,
+  Parcel_Type:updatedbooking.Parcel_Type,
+  Receiver_Phone_Number:updatedbooking.Receiver_Phone_Number,
+  Requested_Delivery_Date:updatedbooking.Requested_Delivery_Date,
+  Delivery_Address_Latitude:updatedbooking.Delivery_Address_Latitude,
+  Parcel_Delivery_Address:updatedbooking.Parcel_Delivery_Address,
+  Delivery_Address_longitude:updatedbooking.Delivery_Address_longitude
+
+}
+
+}
+
+
+const result = await bookingCollection.updateOne(filter, booking,options)
+
+res.send(result)
+
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
 
 app.delete('/bookings/:id', async(req,res)=>{
 
   const id = req.params.id;
   const query = {_id: new ObjectId(id)}
   const result = await bookingCollection.deleteOne(query)
-
+res.send(result)
 
 
 })
