@@ -154,6 +154,38 @@ res.send(result);
 
 
 
+app.put('/users',async(req,res)=>{
+
+const id = req.query.id;
+const { newRole } = req.body;
+const result = await userCollection.updateOne(
+  { _id: new ObjectId(id) },
+  { $set: { role: newRole } }
+);
+res.send(result)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/singleUser', async(req,res)=>{
+  const email = req.query.email;
+  const query = {email:email}
+const result = await userCollection.findOne(query)
+res.send(result);
+})
+
+
+
 
 
 
@@ -202,3 +234,6 @@ app.listen(port, () => {
   console.log(` BD-parcel-management-server is running on port ${port}`);
 
 })
+
+
+
