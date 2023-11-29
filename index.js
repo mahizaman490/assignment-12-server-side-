@@ -31,21 +31,21 @@ async function run() {
     const topDeliveryCollection = client.db('BDparcel').collection('topDelivered')
     const userCollection = client.db('BDparcel').collection('users')
     const allDeliveryManCollection = client.db('BDparcel').collection('allDeliveryMan')
-app.get('/bookings', async(req,res) =>{
+    app.get('/bookings', async (req, res) => {
 
-const cursor = bookingCollection.find()
-const result = await cursor.toArray()
-res.send(result)
+      const cursor = bookingCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
 
-})
+    })
 
 
-app.get('/bookings/:id', async(req,res)=>{
-  const id = req.params.id;
-  const query = {_id: new ObjectId(id)}
-  const result = await bookingCollection.findOne(query)
-  res.send(result)
-})
+    app.get('/bookings/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await bookingCollection.findOne(query)
+      res.send(result)
+    })
 
 
 
@@ -62,43 +62,41 @@ app.get('/bookings/:id', async(req,res)=>{
     })
 
 
-app.put('/bookings/:id',async(req,res)=>{
+    app.put('/bookings/:id', async (req, res) => {
 
-const id = req.params.id;
-const filter = {_id: new ObjectId(id)}
-const options = {upsert: true};
-const updatedbooking = req.body;
-const booking = {
-$set:{
-
-
-  Phone_Number:updatedbooking.Phone_Number,
-  email:updatedbooking.email,
-  name:updatedbooking.name,
-  Receivers_Name:updatedbooking.Receivers_Name,
-  price:updatedbooking.price,
-  Parcel_Weight:updatedbooking.Parcel_Weight,
-  Parcel_Type:updatedbooking.Parcel_Type,
-  Receiver_Phone_Number:updatedbooking.Receiver_Phone_Number,
-  Requested_Delivery_Date:updatedbooking.Requested_Delivery_Date,
-  Delivery_Address_Latitude:updatedbooking.Delivery_Address_Latitude,
-  Parcel_Delivery_Address:updatedbooking.Parcel_Delivery_Address,
-  Delivery_Address_longitude:updatedbooking.Delivery_Address_longitude
-
-}
-
-}
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updatedbooking = req.body;
+      const booking = {
+        $set: {
 
 
-const result = await bookingCollection.updateOne(filter, booking,options)
+          Phone_Number: updatedbooking.Phone_Number,
+          email: updatedbooking.email,
+          name: updatedbooking.name,
+          Receivers_Name: updatedbooking.Receivers_Name,
+          price: updatedbooking.price,
+          Parcel_Weight: updatedbooking.Parcel_Weight,
+          Parcel_Type: updatedbooking.Parcel_Type,
+          Receiver_Phone_Number: updatedbooking.Receiver_Phone_Number,
+          Requested_Delivery_Date: updatedbooking.Requested_Delivery_Date,
+          Delivery_Address_Latitude: updatedbooking.Delivery_Address_Latitude,
+          Parcel_Delivery_Address: updatedbooking.Parcel_Delivery_Address,
+          Delivery_Address_longitude: updatedbooking.Delivery_Address_longitude
 
-res.send(result)
+        }
+
+      }
+
+
+      const result = await bookingCollection.updateOne(filter, booking, options)
+
+      res.send(result)
 
 
 
-})
-
-
+    })
 
 
 
@@ -109,15 +107,17 @@ res.send(result)
 
 
 
-app.delete('/bookings/:id', async(req,res)=>{
-
-  const id = req.params.id;
-  const query = {_id: new ObjectId(id)}
-  const result = await bookingCollection.deleteOne(query)
-res.send(result)
 
 
-})
+    app.delete('/bookings/:id', async (req, res) => {
+
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await bookingCollection.deleteOne(query)
+      res.send(result)
+
+
+    })
 
 
 
@@ -135,39 +135,35 @@ res.send(result)
     })
 
 
-///deliveryMan guloke  dekhabo
+    ///deliveryMan guloke  dekhabo
 
 
 
-app.get('/allDeliveryMan', async(req,res)=>{
-const cursor = allDeliveryManCollection.find()
-const result = await cursor.toArray();
-res.send(result);
-})
+    app.get('/allDeliveryMan', async (req, res) => {
+      const cursor = allDeliveryManCollection.find()
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
 
-app.get('/users', async(req,res)=>{
-const cursor = userCollection.find()
-const result = await cursor.toArray();
-res.send(result);
-})
-
-
-
-app.put('/users',async(req,res)=>{
-
-const id = req.query.id;
-const { newRole } = req.body;
-const result = await userCollection.updateOne(
-  { _id: new ObjectId(id) },
-  { $set: { role: newRole } }
-);
-res.send(result)
-})
+    app.get('/users', async (req, res) => {
+      const cursor = userCollection.find()
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
 
 
+    app.put('/users', async (req, res) => {
 
+      const id = req.query.id;
+      const { newRole } = req.body;
+      const result = await userCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { role: newRole } }
+      );
+      res.send(result)
+    })
 
 
 
@@ -177,12 +173,16 @@ res.send(result)
 
 
 
-app.get('/singleUser', async(req,res)=>{
-  const email = req.query.email;
-  const query = {email:email}
-const result = await userCollection.findOne(query)
-res.send(result);
-})
+
+
+
+
+    app.get('/singleUser', async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email }
+      const result = await userCollection.findOne(query)
+      res.send(result);
+    })
 
 
 
